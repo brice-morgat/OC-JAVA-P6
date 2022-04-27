@@ -5,6 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -17,4 +18,8 @@ public class User {
     private Long id;
     private String email;
     private String password;
+    @OneToMany
+    private Set<Contact> contacts;
+    @OneToMany
+    private Set<Operation> operations;
 }
