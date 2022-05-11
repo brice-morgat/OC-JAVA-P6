@@ -11,19 +11,15 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 @Service
-public class UsersService implements IUserService {
+public class UsersServiceImpl implements IUserService {
     private final UsersRepo usersRepo;
 
     @Autowired
-    public UsersService(UsersRepo usersRepo)  {
+    public UsersServiceImpl(UsersRepo usersRepo)  {
         this.usersRepo = usersRepo;
     }
 
-    /**
-     * Add a User
-     * @param user
-     * @return Saved User
-     */
+
     @Override
     public User saveUser(User user) {
         return usersRepo.save(user);

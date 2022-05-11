@@ -1,28 +1,16 @@
-<!--<!DOCTYPE html>-->
-<!--<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" lang="fr"-->
-<!--      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">-->
-<!--<head>-->
-<!--    <title>Hello World!</title>-->
-<!--</head>-->
-<!--<body>-->
-<!--<h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>-->
-<!--<div sec:authorize="isAuthenticated()">Authenticated as <span th:text="${username['username']}">Email</span></div>-->
-<!--<form th:action="@{/logout}" method="post">-->
-<!--    <input type="submit" value="Sign Out"/>-->
-<!--</form>-->
-<!--</body>-->
-<!--</html>-->
-
 <!DOCTYPE html>
-<html lang="fr">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" lang="fr"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
     <title>Hello World!</title>
 </head>
 <body>
-<h1>Hell!</h1>
-<div >Authenticated as Email</span></div>
-<form method="post">
-    <input type="submit" value="Sign Out"/>
-</form>
-</body>
+    <!--<h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>-->
+    <h1>Salut <span sec:authentication="principal.username"> User</span> ! </h1>
+    <div sec:authorize="isAuthenticated()">Authenticated as <span th:text="${username['username']}">Email</span></div>
+    <span sec:authentication="principal.username"> User</span>
+    <form th:action="@{/logout}" method="post">
+            <input class="ui-button" type="submit" value="Sign Out"/>
+        </form>
+    </body>
 </html>
