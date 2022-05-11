@@ -1,2 +1,16 @@
-package fr.brilarisoft.paymybuddy.repository;public class UsersRepo {
+package fr.brilarisoft.paymybuddy.repository;
+
+import fr.brilarisoft.paymybuddy.models.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
+
+@Repository
+public interface UsersRepo extends JpaRepository<User, Long> {
+    public User deleteUserById(Long id);
+
+    public User findUserById(Long id);
+
+    public Optional<User> findUserByEmail(String email);
 }

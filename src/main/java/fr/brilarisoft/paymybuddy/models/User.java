@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -19,8 +20,12 @@ public class User {
     private String email;
     private String password;
     private Float balance;
-    @OneToMany
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
     private Set<Contact> contacts;
-    @OneToMany
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "emitter_id")
     private Set<Operation> operations;
 }
