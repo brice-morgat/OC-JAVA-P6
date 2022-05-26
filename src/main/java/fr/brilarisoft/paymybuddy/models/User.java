@@ -1,5 +1,6 @@
 package fr.brilarisoft.paymybuddy.models;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -18,6 +19,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_gen")
     private Long id;
     private String email;
+    private String surname;
     private String password;
     private Float balance;
 

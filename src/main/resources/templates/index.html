@@ -3,31 +3,11 @@
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
-     <title>Hello World!</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet" />
+    <title>Hello World!</title>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light">
-        <div class="container-fluid">
-            <a href="#" class="navbar-brand">Pay My Buddy</a>
-            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-                <div class="navbar-nav">
-                    <a href="#" class="nav-item nav-link">Home</a>
-                    <a href="#" class="nav-item nav-link active">Transfer</a>
-                    <a href="#" class="nav-item nav-link">Profile</a>
-                    <a href="#" class="nav-item nav-link">Contact</a>
-                    <a href="#" class="nav-item nav-link">Log Off</a>
-                </div>
-        </div>
-    </nav>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a href="#" class="nav-item nav-link">Home</a>
-        <a class="nav-item"> / </a>
-        <a class="nav-item nav-link"> Transfer</a>
-    </nav>
-
-
+    <div th:insert="navbar"></div>
     <div class="container">
         <br>
         <div class="row">
@@ -35,20 +15,19 @@
                 <h4>Send Money</h4>
             </div>
             <div class="col-md-auto align-self-end">
-                <button type="button" class="btn btn-primary">Add a connection</button>
+                <button type="button" class="btn btn-primary" id="myBtn">Add a connection</button>
             </div>
         </div>
         <br>
         <form class="bg-light">
-            <div class="form-group container p-3 text-center">
-                <select placeholder="Select A connection">
-                    <option>Test</option>
-                    <option>Test</option>
-                    <option>Test</option>
+            <div class="form-group container p-3 d-flex justify-content-around text-center row">
+                <select class="form-control  col-md-3" placeholder="Select A Connection">/
+                    <option value="" disabled selected>Select A connection</option>
+                    <option th:each="user : ${allUser}" th:text="${user.getEmail()}" th:value="${user.getId()}">Test</option>
                 </select>
-                <input type="number" id="tentacles" name="tentacles"
-                       min="10" max="100">
-                <button type="submit" class="btn btn-success">Pay</button>
+                <input type="number" class="form-control col-md-3" placeholder="0€"
+                       min="1" th:max="${utilisateur.getBalance()}">
+                <button type="submit" class="btn btn-success" style="width:200px">Pay</button>
             </div>
         </form>
 
@@ -63,7 +42,7 @@
             </thead>
             <tbody>
             <tr>
-                <td>Otto</td>
+                <td th:text="${username['username']}">Email</td>
                 <td>@mdo</td>
                 <td>@mdo</td>
             </tr>
@@ -101,18 +80,49 @@
             </ul>
         </nav>
     </div>
+    <div id="myModal" class="modal">
 
-    <!--<h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>-->
-<!--    <h1>Salut <span sec:authentication="principal.username"> User</span> ! </h1>-->
-<!--    <div sec:authorize="isAuthenticated()">Authenticated as <span th:text="${username['username']}">Email</span></div>-->
-<!--    <span sec:authentication="principal.username"> User</span>-->
-<!--    <form th:action="@{/logout}" method="post">-->
-<!--            <input class="ui-button" type="submit" value="Sign Out"/>-->
-<!--        </form>-->
-<!--    </body>-->
-<style>
-    .table {
-        border:2px solid rgba(0, 0, 0, 0.97);
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p>Some text in the Modal..</p>
+        </div>
+
+    </div>
+
+<!--    <h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>-->
+    <h1>Salut <span sec:authentication="principal.username"> User</span> ! </h1>
+    <div sec:authorize="isAuthenticated()">Authenticated as <span th:text="${username['username']}">Email</span></div>
+    <span sec:authentication="principal.username"> User</span>
+    <form th:action="@{/logout}" method="post">
+            <input class="ui-button" type="submit" value="Sign Out"/>
+        </form>
+    </body>
+<script>
+    // Get the modal
+    var modal = document.getElementById("myModal");
+
+    // Get the button that opens the modal
+    var btn = document.getElementById("myBtn");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks on the button, open the modal
+    btn.onclick = function() {
+        modal.style.display = "block";
     }
-    </style>
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>
 </html>
