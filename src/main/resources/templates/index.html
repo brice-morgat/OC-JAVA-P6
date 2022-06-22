@@ -19,14 +19,19 @@
             </div>
         </div>
         <br>
-        <form class="bg-light">
+        <form class="bg-light" method="post" th:action="@{/transaction}" th:object="${operation}">
             <div class="form-group container p-3 d-flex justify-content-around text-center row">
-                <select class="form-control  col-md-3" placeholder="Select A Connection">/
+                <select class="form-control  col-md-3" placeholder="Select A Connection" th:field="*{receiverId}" required>/
                     <option value="" disabled selected>Select A connection</option>
-                    <option th:each="user : ${allUser}" th:text="${user.getEmail()}" th:value="${user.getId()}">Test</option>
+                    <option th:each="user : ${contacts}" th:text="${user.getEmail()}" th:value="${user.getId()}">Test</option>
                 </select>
                 <input type="number" class="form-control col-md-3" placeholder="0€"
-                       min="1" th:max="${utilisateur.getBalance()}">
+                       min="1" th:max="${utilisateur.getBalance()}" th:field="*{amount}" required>
+                <input type="text" class="form-control col-md-3" placeholder="Description"
+                       th:field="*{description}">
+                <div th:object="${utilisateur}" hidden>
+                    <input th:field="${utilisateur.id}">
+                </div>
                 <button type="submit" class="btn btn-success" style="width:200px">Pay</button>
             </div>
         </form>
@@ -41,20 +46,10 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td th:text="${username['username']}">Email</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
-            </tr>
-            <tr>
-                <td>Thornton</td>
-                <td>@mdo</td>
-                <td>@fat</td>
-            </tr>
-            <tr>
-                <td>the Bird</td>
-                <td>@mdo</td>
-                <td>@twitter</td>
+            <tr th:each="ope : ${operations}">
+                <td th:text="${ope.getUsername()}">Email</td>
+                <td th:text="${ope.getDescription()}">@mdo</td>
+                <td th:text="${ope.getAmount().toString() + ' €'}">@mdo</td>
             </tr>
             </tbody>
         </table>

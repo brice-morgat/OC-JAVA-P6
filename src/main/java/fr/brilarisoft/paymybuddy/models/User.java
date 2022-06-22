@@ -1,9 +1,6 @@
 package fr.brilarisoft.paymybuddy.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 
 import javax.persistence.*;
@@ -27,7 +24,7 @@ public class User {
     @JoinColumn(name = "user_id")
     private Set<Contact> contacts;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JoinColumn(name = "emitter_id")
     private Set<Operation> operations;
 }

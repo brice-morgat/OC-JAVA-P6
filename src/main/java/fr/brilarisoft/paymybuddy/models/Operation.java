@@ -5,6 +5,8 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -18,4 +20,5 @@ public class Operation {
     private Long receiverId;
     private Float amount;
     private String description;
+    private LocalDateTime date;
 }
