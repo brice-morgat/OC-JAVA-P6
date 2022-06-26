@@ -115,8 +115,8 @@ public class UserServiceTest {
         user2.setId(1L);
         user2.setOperations(new HashSet());
         //When
-        lenient().when(userService.saveUser(user)).thenReturn(user);
-        when(userService.getUserById(anyLong())).thenReturn(user);
+        lenient().when(usersRepo.save(user)).thenReturn(user);
+        when(usersRepo.findUserById(anyLong())).thenReturn(user);
         User result = userService.doPayement(operation, user);
         //Then
         assertTrue(result == user);
@@ -203,8 +203,8 @@ public class UserServiceTest {
         user.setId(2L);
         user.setOperations(new HashSet());
         //When
-        lenient().when(userService.saveUser(user)).thenReturn(user);
-        when(userService.getUserById(anyLong())).thenReturn(user).thenReturn(null);
+        lenient().when(usersRepo.save(user)).thenReturn(user);
+        when(usersRepo.findUserById(anyLong())).thenReturn(user).thenReturn(null);
         //Then
         assertThrows(InvalidInputException.class, () -> userService.doPayement(operation, user));
     }
@@ -212,7 +212,7 @@ public class UserServiceTest {
     @Test
     public void getUserByIdErrorTest() {
         //When
-        when(userService.getUserById(anyLong())).thenThrow(InvalidInputException.class);
+        when(usersRepo.findUserById(anyLong())).thenThrow(InvalidInputException.class);
         //Then
         assertThrows(InvalidInputException.class, () -> userService.getUserById(1L));
     }
@@ -227,7 +227,7 @@ public class UserServiceTest {
         user.setId(2L);
         user.setOperations(new HashSet());
         //When
-        when(userService.getUserByEmail("")).thenReturn(java.util.Optional.of(user));
+        when(usersRepo.findUserByEmail("")).thenReturn(java.util.Optional.of(user));
         //Then
         assertEquals(userService.getUserByEmail(""), java.util.Optional.of(user));
     }
@@ -248,7 +248,7 @@ public class UserServiceTest {
         contacts.add(contact);
 
         //When
-        when(userService.getUserById(anyLong())).thenReturn(user);
+        when(usersRepo.findUserById(anyLong())).thenReturn(user);
         //Then
         assertTrue(userService.getListContact(contacts).size() == 1);
     }
@@ -272,7 +272,7 @@ public class UserServiceTest {
         operations.add(operation);
 
         //When
-        when(userService.getUserById(anyLong())).thenReturn(user);
+        when(usersRepo.findUserById(anyLong())).thenReturn(user);
         //Then
         assertTrue(userService.getListOperation(operations).size() == 1);
     }

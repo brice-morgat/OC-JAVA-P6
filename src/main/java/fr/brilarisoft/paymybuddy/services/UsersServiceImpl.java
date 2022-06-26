@@ -7,7 +7,6 @@ import fr.brilarisoft.paymybuddy.models.User;
 import fr.brilarisoft.paymybuddy.models.dto.OperationDTO;
 import fr.brilarisoft.paymybuddy.models.dto.UserDTO;
 import fr.brilarisoft.paymybuddy.repository.UsersRepo;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -79,7 +78,6 @@ public class UsersServiceImpl implements IUserService {
         if ( operation.getAmount() == null || operation.getAmount() <= 0) {
             throw new InvalidInputException("Amount of transaction invalid");
         }
-
         operation.setId(null);
         operation.setDate(LocalDateTime.now());
         System.out.println(user);
@@ -94,8 +92,6 @@ public class UsersServiceImpl implements IUserService {
         user2.setBalance(user2.getBalance() + operation.getAmount());
         return user1;
     }
-
-
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

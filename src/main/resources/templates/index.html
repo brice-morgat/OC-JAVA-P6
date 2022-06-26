@@ -28,7 +28,7 @@
                 <input type="number" class="form-control col-md-3" placeholder="0€"
                        min="1" th:max="${utilisateur.getBalance()}" th:field="*{amount}" required>
                 <input type="text" class="form-control col-md-3" placeholder="Description"
-                       th:field="*{description}">
+                       th:field="*{description}" >
                 <div th:object="${utilisateur}" hidden>
                     <input th:field="${utilisateur.id}">
                 </div>

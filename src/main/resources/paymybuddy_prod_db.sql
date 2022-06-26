@@ -77,7 +77,7 @@ CREATE TABLE IF NOT EXISTS `operation` (
 DROP TABLE IF EXISTS `operation_id_seq`;
 CREATE TABLE IF NOT EXISTS `operation_id_seq` (
   `next_val` bigint DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+);
 
 --
 -- Déchargement des données de la table `operation_id_seq`
@@ -100,7 +100,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `password` varchar(255) DEFAULT NULL,
   `surname` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+);
 
 --
 -- Déchargement des données de la table `user`
@@ -121,7 +121,7 @@ INSERT INTO `user` (`id`, `balance`, `email`, `password`, `surname`) VALUES
 DROP TABLE IF EXISTS `user_id_seq`;
 CREATE TABLE IF NOT EXISTS `user_id_seq` (
   `next_val` bigint DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+);
 
 --
 -- Déchargement des données de la table `user_id_seq`

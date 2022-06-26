@@ -20,7 +20,6 @@ public interface IUserService extends UserDetailsService {
      */
     public User saveUser(User user);
 
-
     /**
      * Get a user by email, or return null if no user is found.
      *
@@ -53,12 +52,12 @@ public interface IUserService extends UserDetailsService {
      */
     public List<OperationDTO> getListOperation(Set<Operation> operations);
 
-    @Transactional
     /**
      * A method that is used to do a payment.
      *
      * @param operation and user
      * @return The user emitter of the transaction
      */
+    @Transactional
     public User doPayement(Operation operation, User user);
 }

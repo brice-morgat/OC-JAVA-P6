@@ -22,11 +22,6 @@ public class UsersController {
     @Autowired
     private IUserService userService;
 
-    @GetMapping("/hello")
-    public String helloWorld() {
-        return "hello";
-    }
-
     @GetMapping("/")
     public String indexPage(Model model) {
         Authentication authentication;
