@@ -12,8 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 @Controller
@@ -46,9 +44,11 @@ public class UsersController {
     }
 
     @PostMapping("/transaction")
-    public String makeTransaction(@ModelAttribute Operation operation, @ModelAttribute User user, Model model) {
+    public String makeTransaction(@ModelAttribute("operation") Operation operation, @ModelAttribute("user") User user, Model model) {
         try {
+            model.addAttribute("rien", "");
             userService.doPayement(operation, user);
+
             return "redirect:/";
         } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
