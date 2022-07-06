@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" lang="fr"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light">
+      <div class="container-fluid">
+        <a href="#" class="navbar-brand">Pay My Buddy</a>
+        <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="navbar-nav">
+          <a href="#" class="nav-item nav-link">Home</a>
+          <a href="#" class="nav-item nav-link active">Transfer</a>
+          <a href="#" class="nav-item nav-link">Profile</a>
+          <a href="#" class="nav-item nav-link">Contact</a>
+          <a th:href="@{/logout}" th:action="@{/logout}" method="post" class="nav-item nav-link">Log Off</a>
+        </div>
+      </div>
+    </nav>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a href="#" class="nav-item nav-link">Home</a>
+      <a class="nav-item"> / </a>
+      <a class="nav-item nav-link"> Transfer</a>
+    </nav>
+</body>
+</html>

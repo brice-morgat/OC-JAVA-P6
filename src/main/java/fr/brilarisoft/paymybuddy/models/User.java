@@ -1,10 +1,10 @@
 package fr.brilarisoft.paymybuddy.models;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
+
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -16,5 +16,15 @@ public class User {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_gen")
     private Long id;
     private String email;
+    private String surname;
     private String password;
+    private Float balance;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private Set<Contact> contacts;
+
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH,}, fetch = FetchType.EAGER)
+    @JoinColumn(name = "emitter_id")
+    private Set<Operation> operations;
 }
