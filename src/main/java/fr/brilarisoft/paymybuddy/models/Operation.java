@@ -5,7 +5,6 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -21,4 +20,6 @@ public class Operation {
     private Float amount;
     private String description;
     private LocalDateTime date;
+    @Column(name = "emitter_id")
+    private Long emitterId;
 }

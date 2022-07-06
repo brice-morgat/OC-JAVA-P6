@@ -1,11 +1,11 @@
 
 START TRANSACTION;
 --
--- Base de données : `paymybuddy_prod_db`
+-- Base de données : `paymybuddy_test_db`
 --
 
 CREATE DATABASE IF NOT EXISTS `paymybuddy_prod_db` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
-USE `paymybuddy_prod_db`;
+USE `paymybuddy_test_db`;
 
 -- --------------------------------------------------------
 
@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS `contact` (
   `user_id` bigint DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FKe07k4jcfdophemi6j1lt84b61` (`user_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ;
 
 --
 -- Déchargement des données de la table `contact`
@@ -41,7 +41,7 @@ INSERT INTO `contact` (`id`, `contact_id`, `user_id`) VALUES
 DROP TABLE IF EXISTS `contact_id_seq`;
 CREATE TABLE IF NOT EXISTS `contact_id_seq` (
   `next_val` bigint DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ;
 
 --
 -- Déchargement des données de la table `contact_id_seq`
@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS `operation` (
   `emitter_id` bigint DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FKfpo0xqx794ih7sf687n86g3rh` (`emitter_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ;
 
 -- --------------------------------------------------------
 

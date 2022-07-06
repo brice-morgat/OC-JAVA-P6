@@ -4,30 +4,18 @@ import fr.brilarisoft.paymybuddy.exceptions.InvalidInputException;
 import fr.brilarisoft.paymybuddy.models.Contact;
 import fr.brilarisoft.paymybuddy.models.Operation;
 import fr.brilarisoft.paymybuddy.models.User;
-import fr.brilarisoft.paymybuddy.models.dto.ContactDTO;
-import fr.brilarisoft.paymybuddy.models.dto.OperationDTO;
 import fr.brilarisoft.paymybuddy.repository.UsersRepo;
-import fr.brilarisoft.paymybuddy.services.IUserService;
 import fr.brilarisoft.paymybuddy.services.UsersServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -117,7 +105,7 @@ public class UserServiceTest {
         //When
         lenient().when(usersRepo.save(user)).thenReturn(user);
         when(usersRepo.findUserById(anyLong())).thenReturn(user);
-        User result = userService.doPayement(operation, user);
+        User result = userService.doPayement(operation, user.getId());
         //Then
         assertTrue(result == user);
     }
@@ -150,7 +138,7 @@ public class UserServiceTest {
         user.setId(2L);
         user.setOperations(new HashSet());
         //Then
-        assertThrows(NullPointerException.class, () -> userService.doPayement(null, user));
+        assertThrows(NullPointerException.class, () -> userService.doPayement(null, user.getId()));
     }
 
     @Test
@@ -167,7 +155,7 @@ public class UserServiceTest {
         user.setId(2L);
         user.setOperations(new HashSet());
         //Then
-        assertThrows(InvalidInputException.class, () -> userService.doPayement(operation, user));
+        assertThrows(InvalidInputException.class, () -> userService.doPayement(operation, user.getId()));
     }
 
     @Test
@@ -185,7 +173,7 @@ public class UserServiceTest {
         user.setId(2L);
         user.setOperations(new HashSet());
         //Then
-        assertThrows(InvalidInputException.class, () -> userService.doPayement(operation, user));
+        assertThrows(InvalidInputException.class, () -> userService.doPayement(operation, user.getId()));
     }
 
     @Test
@@ -206,7 +194,7 @@ public class UserServiceTest {
         lenient().when(usersRepo.save(user)).thenReturn(user);
         when(usersRepo.findUserById(anyLong())).thenReturn(user).thenReturn(null);
         //Then
-        assertThrows(InvalidInputException.class, () -> userService.doPayement(operation, user));
+        assertThrows(InvalidInputException.class, () -> userService.doPayement(operation, user.getId()));
     }
 
     @Test

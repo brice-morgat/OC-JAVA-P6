@@ -6,7 +6,12 @@ import fr.brilarisoft.paymybuddy.models.Operation;
 import fr.brilarisoft.paymybuddy.models.User;
 import fr.brilarisoft.paymybuddy.models.dto.OperationDTO;
 import fr.brilarisoft.paymybuddy.models.dto.UserDTO;
+import fr.brilarisoft.paymybuddy.repository.OperationsRepo;
 import fr.brilarisoft.paymybuddy.repository.UsersRepo;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -18,9 +23,10 @@ import java.util.*;
 @Service
 public class UsersServiceImpl implements IUserService {
     private final UsersRepo usersRepo;
-
-    public UsersServiceImpl(UsersRepo usersRepo)  {
+    private final OperationsRepo operationsRepo;
+    public UsersServiceImpl(UsersRepo usersRepo, OperationsRepo operationsRepo)  {
         this.usersRepo = usersRepo;
+        this.operationsRepo = operationsRepo;
     }
 
     @Override
@@ -40,7 +46,12 @@ public class UsersServiceImpl implements IUserService {
     @Override
     public User getUserById(Long id) {
         try {
-            return usersRepo.findUserById(id);
+            User user = usersRepo.findUserById(id);
+            if (user != null) {
+                return user;
+            } else {
+                throw new InvalidInputException("User not found");
+            }
         } catch (Exception e) {
             throw new InvalidInputException("Something went wrong");
         }
@@ -70,9 +81,15 @@ public class UsersServiceImpl implements IUserService {
     }
 
     @Override
+    public Page<Operation> findPage(Long id,int pageNumber) {
+        Pageable pageable = PageRequest.of(pageNumber - 1, 3, Sort.by("date").descending());
+        return operationsRepo.findAllByEmitterId(4L, pageable);
+    }
+
+    @Override
     @Transactional
-    public User doPayement(Operation operation, User user) {
-        if(operation == null || user == null) {
+    public User doPayement(Operation operation, Long id) {
+        if(operation == null || id == null) {
             throw new NullPointerException("At least one params is null");
         }
         if ( operation.getAmount() == null || operation.getAmount() <= 0) {
@@ -80,12 +97,16 @@ public class UsersServiceImpl implements IUserService {
         }
         operation.setId(null);
         operation.setDate(LocalDateTime.now());
-        System.out.println(user);
-        User user1 = getUserById(user.getId());
-        System.out.println(user1.toString());
-        user1.setBalance(user1.getBalance() - operation.getAmount());
+        User user1 = getUserById(id);
+        System.out.println(user1);
+        if (operation.getAmount() >= user1.getBalance()) {
+            throw new InvalidInputException("You don't have enough money");
+        }
+        user1.setBalance(user1.getBalance() - (operation.getAmount() + (operation.getAmount() * 0.005F)));
         user1.getOperations().add(operation);
+
         User user2 = getUserById(operation.getReceiverId());
+        System.out.println(user2);
         if (user2 == null) {
             throw new InvalidInputException("Something went wrong");
         }
