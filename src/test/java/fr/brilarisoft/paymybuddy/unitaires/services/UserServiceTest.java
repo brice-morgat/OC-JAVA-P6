@@ -4,6 +4,8 @@ import fr.brilarisoft.paymybuddy.exceptions.InvalidInputException;
 import fr.brilarisoft.paymybuddy.models.Contact;
 import fr.brilarisoft.paymybuddy.models.Operation;
 import fr.brilarisoft.paymybuddy.models.User;
+import fr.brilarisoft.paymybuddy.models.dto.OperationDTO;
+import fr.brilarisoft.paymybuddy.models.dto.UserDTO;
 import fr.brilarisoft.paymybuddy.repository.UsersRepo;
 import fr.brilarisoft.paymybuddy.services.UsersServiceImpl;
 import org.junit.jupiter.api.Test;
@@ -11,15 +13,18 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 
@@ -177,11 +182,31 @@ public class UserServiceTest {
     }
 
     @Test
+    public void doPaymentWithOperationAmountMoreThanBalanceInputTest() {
+        //Given
+        Operation operation = new Operation();
+        operation.setReceiverId(1L);
+        operation.setAmount(200F);
+        operation.setDescription("Description");
+        operation.setDate(LocalDateTime.now());
+        User user = new User();
+        user.setEmail("brice.morgat@gmx.fr");
+        user.setBalance(100F);
+        user.setSurname("Surname");
+        user.setId(2L);
+        //When
+        lenient().when(usersRepo.save(user)).thenReturn(user);
+        when(usersRepo.findUserById(anyLong())).thenReturn(user).thenReturn(user);
+        //Then
+        assertThrows(InvalidInputException.class, () -> userService.doPayement(operation, user.getId()));
+    }
+
+    @Test
     public void doPayementWithUserReceiverNullTest() {
         //Given
         Operation operation = new Operation();
         operation.setAmount(100F);
-        operation.setReceiverId(1L);
+        operation.setReceiverId(25L);
         operation.setDescription("Description");
         operation.setDate(LocalDateTime.now());
         User user = new User();
@@ -263,6 +288,63 @@ public class UserServiceTest {
         when(usersRepo.findUserById(anyLong())).thenReturn(user);
         //Then
         assertTrue(userService.getListOperation(operations).size() == 1);
+    }
+
+    @Test
+    public void loadByUsernameTest(){
+        //Given
+        User user = new User();
+        user.setEmail("brice.morgat@gmx.fr");
+        user.setBalance(200F);
+        user.setSurname("Surname");
+        user.setPassword("password");
+        user.setId(2L);
+        user.setOperations(new HashSet());
+        //When
+        when(usersRepo.findUserByEmail(anyString())).thenReturn(java.util.Optional.of(user));
+        //Then
+        assertNotNull(userService.loadUserByUsername(""));
+    }
+
+    @Test
+    public void loadByUsernameNotFoundTest(){
+        //Given
+        User user = new User();
+        user.setEmail("brice.morgat@gmx.fr");
+        user.setBalance(200F);
+        user.setSurname("Surname");
+        user.setPassword("password");
+        user.setId(2L);
+        user.setOperations(new HashSet());
+        //When
+        when(usersRepo.findUserByEmail(anyString())).thenReturn(Optional.empty());
+        //Then
+        assertThrows(UsernameNotFoundException.class, () -> userService.loadUserByUsername(""));
+    }
+
+    @Test
+    public void operationDTOTest() {
+        OperationDTO operationDTO = new OperationDTO(null, null,null, null,null);
+        operationDTO.setId(1L);
+        operationDTO.setAmount(100F);
+        operationDTO.setDate(LocalDateTime.now());
+        operationDTO.setSurname("surname");
+        operationDTO.setDescription("Desc");
+
+        assertDoesNotThrow(() -> operationDTO.getId());
+        assertDoesNotThrow(() -> operationDTO.getAmount());
+        assertDoesNotThrow(() -> operationDTO.getDate());
+        assertDoesNotThrow(() -> operationDTO.getSurname());
+        assertDoesNotThrow(() -> operationDTO.getDescription());
+        assertDoesNotThrow(() -> operationDTO.toString());
+        assertDoesNotThrow(() -> operationDTO.compareTo(operationDTO));
+    }
+
+    @Test
+    public void userDTOTest() {
+        UserDTO userDTO = new UserDTO(null, null);
+        assertDoesNotThrow(() ->userDTO.setEmail("email"));
+        assertDoesNotThrow(() ->userDTO.setId(1L));
     }
 }
 

@@ -17,6 +17,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -83,7 +85,7 @@ public class UsersServiceImpl implements IUserService {
     @Override
     public Page<Operation> findPage(Long id,int pageNumber) {
         Pageable pageable = PageRequest.of(pageNumber - 1, 3, Sort.by("date").descending());
-        return operationsRepo.findAllByEmitterId(4L, pageable);
+        return operationsRepo.findAllByEmitterId(id, pageable);
     }
 
     @Override
@@ -98,19 +100,15 @@ public class UsersServiceImpl implements IUserService {
         operation.setId(null);
         operation.setDate(LocalDateTime.now());
         User user1 = getUserById(id);
-        System.out.println(user1);
-        if (operation.getAmount() >= user1.getBalance()) {
+        if (operation.getAmount() > user1.getBalance()) {
             throw new InvalidInputException("You don't have enough money");
         }
-        user1.setBalance(user1.getBalance() - (operation.getAmount() + (operation.getAmount() * 0.005F)));
+        user1.setBalance(round((user1.getBalance() - (operation.getAmount() + (operation.getAmount() * 0.005F))), 2));
         user1.getOperations().add(operation);
 
         User user2 = getUserById(operation.getReceiverId());
-        System.out.println(user2);
-        if (user2 == null) {
-            throw new InvalidInputException("Something went wrong");
-        }
-        user2.setBalance(user2.getBalance() + operation.getAmount());
+
+        user2.setBalance(user2.getBalance() + operation.getAmount() - (operation.getAmount() + (operation.getAmount() * 0.005F)));
         return user1;
     }
 
@@ -121,4 +119,16 @@ public class UsersServiceImpl implements IUserService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         return new org.springframework.security.core.userdetails.User(user.getEmail(),user.getPassword(), new ArrayList<>());
     }
+
+    /**
+     * Round to certain number of decimals
+     *
+     * @param d
+     * @param decimalPlace the numbers of decimals
+     * @return
+     */
+    public static float round(float d, int decimalPlace) {
+        return BigDecimal.valueOf(d).setScale(decimalPlace, RoundingMode.HALF_UP).floatValue();
+    }
+
 }

@@ -82,22 +82,32 @@ public class UserControllerIT {
     @WithMockUser("brice.morgat@gmx.fr")
     public void indexTest() throws Exception {
         //Given
-        Set<Contact> contacts = new HashSet<>();
-        Contact contact = new Contact();
-        contact.setId(4L);
-        contact.setContactId(1L);
-        contacts.add(contact);
-
-        User user = new User();
-        user.setId(4L);
-        user.setEmail("brice.morgat@gmx.fr");
-        user.setSurname("Brice");
-        user.setPassword("$2a$10$UxsKx3mg7JsY8OyB4rHu9ueM0evtvJZUBdrr1xF28Dyfmt1m45fRq");
-        user.setBalance(0.0F);
-
-
         this.mockMvc.perform(MockMvcRequestBuilders.get("/"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.view().name("index"))
+                .andExpect(MockMvcResultMatchers.model().attributeExists("username"))
+                .andExpect(MockMvcResultMatchers.model().attributeExists("utilisateur"))
+                .andExpect(MockMvcResultMatchers.model().attribute("utilisateur", allOf(
+                        hasProperty("email", equalTo("brice.morgat@gmx.fr")),
+                        hasProperty("surname", equalTo("Brice")),
+                        hasProperty("id", equalTo(4L))
+                )))
+                .andExpect(MockMvcResultMatchers.model().attributeExists("contacts"))
+                .andExpect(MockMvcResultMatchers.model().attribute("contacts", hasItem(allOf(
+                        hasProperty("id", equalTo(1L)),
+                        hasProperty("email", equalTo("haley@gmail.com"))
+                ))))
+                .andExpect(MockMvcResultMatchers.model().attributeExists("operation"))
+                .andExpect(MockMvcResultMatchers.model().attributeExists("operations"));
+    }
+
+    @Test
+    @WithMockUser("brice.morgat@gmx.fr")
+    public void indexPageTest() throws Exception {
+        //Given
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/page=1"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.view().name("index"))
                 .andExpect(MockMvcResultMatchers.model().attributeExists("username"))
                 .andExpect(MockMvcResultMatchers.model().attributeExists("utilisateur"))
                 .andExpect(MockMvcResultMatchers.model().attribute("utilisateur", allOf(

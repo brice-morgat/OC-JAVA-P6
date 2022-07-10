@@ -38,3 +38,63 @@
 .table {
     border:2px solid rgba(0, 0, 0, 0.97);
 }
+
+.logo {
+    background: linear-gradient(90deg, rgba(97,186,90,1) 0%, rgba(140,196,76,1) 100%);
+    color: white;
+    padding: 5px 5px 1px 5px;
+    text-align: center;
+    margin-bottom: 10px;
+    border-radius: 10px;
+}
+
+.logo-nav {
+    background: linear-gradient(90deg, rgba(97,186,90,1) 0%, rgba(140,196,76,1) 100%);
+    color: white;
+    padding: 5px 5px 1px 5px;
+    text-align: center;
+    border-radius: 10px;
+}
+
+.card {
+    border-color: black;
+}
+
+
+* {box-sizing: border-box;}
+
+/* Style the input container */
+.input-container {
+    display: flex;
+    width: 100%;
+    /*margin-bottom: 15px;*/
+}
+
+/* Style the form icons */
+.icon {
+    padding: 10px;
+    /*background: dodgerblue;*/
+    color: black;
+    min-width: 50px;
+    text-align: center;
+}
+
+/* Style the input fields */
+.input-field {
+    width: 100%;
+    padding: 10px;
+    outline: none;
+}
+
+.input-field:focus {
+    border: 2px solid dodgerblue;
+}
+
+/* Set a style for the submit button */
+.btn {
+    padding: 10px 30px 10px;
+}
+
+.btn:hover {
+    opacity: 1;
+}

@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.env.Environment;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.io.File;
@@ -112,21 +113,18 @@ public class UserServiceIT {
     public void doPaymentTest() {
         //Given
         Operation operation = new Operation();
-        operation.setAmount(100F);
+        operation.setAmount(100F - 0.5F);
         operation.setReceiverId(1L);
         operation.setDescription("Description");
         operation.setDate(LocalDateTime.now());
         User user = new User();
-        user.setEmail("brice.morgat@gmx.fr");
-        user.setBalance(200F);
-        user.setSurname("Surname");
         user.setId(4L);
         user.setOperations(new HashSet());
         //When
 
         User result = userService.doPayement(operation, user.getId());
         //Then
-        assertTrue(result.getBalance() == 0F);
+        assertEquals(result.getBalance(), 0F);
     }
 
     @Test
@@ -274,7 +272,18 @@ public class UserServiceIT {
         operations.add(operation);
 
         //When
-        //Then
         assertTrue(userService.getListOperation(operations).size() == 1);
+    }
+
+    @Test
+    public void loadUserByUsernameTest() {
+//        userService.loadUserByUsername("brice.morgat@gmx.fr");
+        assertTrue(userService.loadUserByUsername("brice.morgat@gmx.fr").getUsername().equals("brice.morgat@gmx.fr"));
+    }
+
+    @Test
+    public void loadUserByUsernameErrorTest() {
+//        userService.loadUserByUsername("brice.morgat@gmx.fr");
+        assertThrows(UsernameNotFoundException.class, () -> userService.loadUserByUsername("ekjfljzlkjlkjlk"));
     }
 }

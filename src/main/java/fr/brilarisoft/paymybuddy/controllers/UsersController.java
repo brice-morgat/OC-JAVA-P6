@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -32,12 +33,12 @@ public class UsersController {
         List<UserDTO> contacts;
         List<OperationDTO> operations;
 
-
         try {
             authentication = SecurityContextHolder.getContext().getAuthentication();
             user = userService.getUserByEmail(authentication.getName()).get();
-
+            System.out.println(user);
             Page<Operation> page = userService.findPage(user.getId(),1);
+            System.out.println(page);
             int totalPage = page.getTotalPages();
 
             contacts = userService.getListContact(user.getContacts());
@@ -67,7 +68,6 @@ public class UsersController {
         try {
             authentication = SecurityContextHolder.getContext().getAuthentication();
             user = userService.getUserByEmail(authentication.getName()).get();
-
 
             Page<Operation> page = userService.findPage(user.getId(),currentPage);
             int totalPage = page.getTotalPages();

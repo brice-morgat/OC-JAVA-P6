@@ -26,7 +26,7 @@
                     <option th:each="user : ${contacts}" th:text="${user.getEmail()}" th:value="${user.getId()}">Test</option>
                 </select>
                 <input type="number" class="form-control col-md-3" placeholder="0€" step="0.01"
-                       min="1" th:max="${utilisateur.getBalance() - (utilisateur.getBalance() * 0.005)}" th:field="*{amount}" required>
+                       min="1" th:max="${utilisateur.getBalance()}" th:field="*{amount}" required>
                 <input type="text" class="form-control col-md-3" placeholder="Description"
                        th:field="*{description}" >
                 <div th:object="${utilisateur}" hidden>
